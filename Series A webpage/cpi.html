@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding CPI · Airfare Price Index — Augmenting CPI</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230F2A43'><path d='M12 1L21 10.5Q21.3 11.6 20.3 12.1L15 14Q16 18.9 17.3 21.9Q17.8 22.9 16.6 22.9L12 18.9L7.4 22.9Q6.2 22.9 6.7 21.9Q8 18.9 9 14L3.7 12.1Q2.7 11.6 3 10.5Z'/></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cpi.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="app-header" id="cpi-header">
+    <div class="header-container">
+      <a class="brand-section" href="index.html">
+        <div class="brand-logo-mark" title="National Airfare Intelligence Engine">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 1L21 10.5Q21.3 11.6 20.3 12.1L15 14Q16 18.9 17.3 21.9Q17.8 22.9 16.6 22.9L12 18.9L7.4 22.9Q6.2 22.9 6.7 21.9Q8 18.9 9 14L3.7 12.1Q2.7 11.6 3 10.5Z"/>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <div class="brand-title">
+            <span>Airfare Price Index</span>
+          </div>
+          <span class="india-first-badge">Real-Time Airfare Intelligence for CPI Augmentation</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a class="nav-link" href="index.html">Dashboard</a></li>
+          <li><a class="nav-link active" href="cpi.html">CPI Augmentation</a></li>
+          <li><a class="nav-link" href="methodology.html">Methodology</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-status-area">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Dark / Light mode" aria-label="Toggle Theme">
+          <svg id="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <svg id="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="cpi-main">
+
+    <!-- 1 · HERO -->
+    <section class="cpi-hero reveal-section" id="cpi-hero">
+      <div class="cpi-hero-bg" aria-hidden="true">
+        <svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="cpiHeroFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0284C7" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#0284C7" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g class="cpi-hero-grid">
+            <line x1="80" y1="120" x2="1120" y2="120"/>
+            <line x1="80" y1="200" x2="1120" y2="200"/>
+            <line x1="80" y1="280" x2="1120" y2="280"/>
+            <line x1="80" y1="360" x2="1120" y2="360"/>
+            <line x1="120" y1="80" x2="120" y2="400"/>
+            <line x1="360" y1="80" x2="360" y2="400"/>
+            <line x1="600" y1="80" x2="600" y2="400"/>
+            <line x1="840" y1="80" x2="840" y2="400"/>
+            <line x1="1080" y1="80" x2="1080" y2="400"/>
+          </g>
+          <line class="cpi-hero-ref" x1="80" y1="250" x2="1120" y2="250"/>
+          <path class="cpi-hero-area" d="M 80 320 C 200 318 260 258 340 252 C 430 245 470 196 570 206 C 670 216 700 130 800 156 C 880 176 940 122 1120 96 L 1120 420 L 80 420 Z"/>
+          <path class="cpi-hero-line" d="M 80 320 C 200 318 260 258 340 252 C 430 245 470 196 570 206 C 670 216 700 130 800 156 C 880 176 940 122 1120 96"/>
+          <circle class="cpi-hero-dot" cx="1120" cy="96" r="5"/>
+        </svg>
+      </div>
+
+      <a class="cpi-eyebrow" href="#cpi-hero">Airfare Price Index · Augmenting CPI</a>
+      <h1 class="cpi-hero-title">Understanding CPI — and the Case for Real-Time Airfare Data</h1>
+      <p class="cpi-hero-sub">How India measures consumer prices, where airfare fits into the basket, and how high-frequency fare data can strengthen CPI intelligence.</p>
+
+      <div class="cpi-hero-stats">
+        <div class="cpi-hero-stat">
+          <div class="cpi-hero-stat-val cpi-accent-num num-tabular">2024&nbsp;=&nbsp;100</div>
+          <div class="cpi-hero-stat-lbl">CPI base-year reference</div>
+        </div>
+        <div class="cpi-hero-stat-sep"></div>
+        <div class="cpi-hero-stat">
+          <div class="cpi-hero-stat-val num-tabular">Monthly</div>
+          <div class="cpi-hero-stat-lbl">Official CPI publication frequency</div>
+        </div>
+        <div class="cpi-hero-stat-sep"></div>
+        <div class="cpi-hero-stat">
+          <div class="cpi-hero-stat-val air-accent-num num-tabular">Weekly</div>
+          <div class="cpi-hero-stat-lbl">Online price collection cadence</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · WHAT IS CPI -->
+    <section class="cpi-section reveal-section" id="cpi-what">
+      <div class="cpi-section-grid cpi-what-grid">
+        <div class="cpi-what-copy">
+          <p class="cpi-kicker">Section 01 · Foundation</p>
+          <h2 class="cpi-section-title">What is CPI?</h2>
+          <p class="cpi-prose">The Consumer Price Index (CPI) measures the change over time in the retail prices of goods and services consumed by households. It is the official measure of retail inflation in India.</p>
+        </div>
+
+        <div class="cpi-flow cpi-flow-vertical">
+          <div class="cpi-flow-step"><span class="cpi-flow-idx">01</span><span class="cpi-flow-txt">Household spending</span></div>
+          <div class="cpi-flow-arrow">↓</div>
+          <div class="cpi-flow-step"><span class="cpi-flow-idx">02</span><span class="cpi-flow-txt">CPI basket</span></div>
+          <div class="cpi-flow-arrow">↓</div>
+          <div class="cpi-flow-step"><span class="cpi-flow-idx">03</span><span class="cpi-flow-txt">Item prices</span></div>
+          <div class="cpi-flow-arrow">↓</div>
+          <div class="cpi-flow-step"><span class="cpi-flow-idx">04</span><span class="cpi-flow-txt">Weighted index</span></div>
+          <div class="cpi-flow-arrow">↓</div>
+          <div class="cpi-flow-step"><span class="cpi-flow-idx">05</span><span class="cpi-flow-txt">Inflation</span></div>
+        </div>
+      </div>
+
+      <div class="cpi-why">
+        <span class="cpi-why-tag">Why it matters</span>
+        <p class="cpi-why-txt">CPI is the reference used to understand <strong>inflation</strong>, how <strong>purchasing power</strong> changes, and the overall <strong>economic conditions</strong> households are facing.</p>
+      </div>
+    </section>
+
+    <!-- 3 · HOW INDIA CALCULATES CPI -->
+    <section class="cpi-section reveal-section" id="cpi-method">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 02 · Framework</p>
+        <h2 class="cpi-section-title">How India Calculates CPI</h2>
+        <p class="cpi-section-sub">A five-step methodology turns collected retail prices into a single national inflation signal.</p>
+      </div>
+
+      <div class="cpi-timeline">
+        <div class="cpi-timeline-rail"></div>
+        <div class="cpi-step">
+          <div class="cpi-step-node">1</div>
+          <div class="cpi-step-txt">
+            <span class="cpi-step-name">Define basket</span>
+            <span class="cpi-step-desc">Select representative goods &amp; services households buy</span>
+          </div>
+        </div>
+        <div class="cpi-step">
+          <div class="cpi-step-node">2</div>
+          <div class="cpi-step-txt">
+            <span class="cpi-step-name">Assign weights</span>
+            <span class="cpi-step-desc">Reflect relative importance in household spending</span>
+          </div>
+        </div>
+        <div class="cpi-step">
+          <div class="cpi-step-node">3</div>
+          <div class="cpi-step-txt">
+            <span class="cpi-step-name">Collect prices</span>
+            <span class="cpi-step-desc">Retail and online price collection at regular intervals</span>
+          </div>
+        </div>
+        <div class="cpi-step">
+          <div class="cpi-step-node">4</div>
+          <div class="cpi-step-txt">
+            <span class="cpi-step-name">Calculate item indices</span>
+            <span class="cpi-step-desc">Price relatives for each item, referenced to the base year</span>
+          </div>
+        </div>
+        <div class="cpi-step">
+          <div class="cpi-step-node">5</div>
+          <div class="cpi-step-txt">
+            <span class="cpi-step-name">Aggregate into CPI</span>
+            <span class="cpi-step-desc">Weighted combination into the composite index</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cpi-formula">
+        <div class="cpi-formula-lbl">Inflation</div>
+        <div class="cpi-formula-expr num-tabular" aria-label="Inflation equals year-on-year percentage change in CPI">=</div>
+        <div class="cpi-formula-frac">
+          <span class="cpi-formula-num">CPI<sub>t</sub> − CPI<sub>t−12</sub></span>
+          <span class="cpi-formula-den">CPI<sub>t−12</sub></span>
+        </div>
+        <div class="cpi-formula-expr">× 100</div>
+        <div class="cpi-formula-hint">Year-on-year % change in CPI</div>
+      </div>
+    </section>
+
+    <!-- 4 · INSIDE THE CPI BASKET -->
+    <section class="cpi-section reveal-section" id="cpi-basket">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 03 · Composition</p>
+        <h2 class="cpi-section-title">Inside the CPI Basket</h2>
+        <p class="cpi-section-sub">Groups and their indicative shares of the national basket. Hover a bar for detail.</p>
+      </div>
+
+      <div class="cpi-basket-grid">
+        <div class="cpi-basket-bars" id="cpi-basket-bars"></div>
+        <div class="cpi-basket-detail" id="cpi-basket-detail">
+          <div class="cpi-basket-detail-empty">Hover a category bar to inspect its weight and coverage.</div>
+        </div>
+      </div>
+
+      <div class="cpi-basket-note">
+        Transport (which includes airfare) is highlighted with the airfare accent.
+        <span class="cpi-basket-anno">Airfare is one of the price components captured within the CPI framework.</span>
+      </div>
+    </section>
+
+    <!-- 5 · WHY REAL-TIME AIRFARE DATA MATTERS -->
+    <section class="cpi-section reveal-section" id="cpi-compare">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 04 · The Case</p>
+        <h2 class="cpi-section-title">Why Real-Time Airfare Data Matters</h2>
+        <p class="cpi-section-sub">Official CPI is authoritative but periodic. High-frequency airfare data fills the window between releases.</p>
+      </div>
+
+      <div class="cpi-compare-grid">
+        <div class="cpi-compare-panel cpi-cpi-panel">
+          <div class="cpi-compare-head">
+            <span class="cpi-compare-chip cpi-cpi-chip">Official statistic</span>
+            <span class="cpi-compare-title">Traditional CPI</span>
+          </div>
+          <div class="cpi-compare-stages">
+            <span class="cpi-compare-stage">Monthly observation</span>
+            <span class="cpi-arrow-down">↓</span>
+            <span class="cpi-compare-stage">Published CPI</span>
+            <span class="cpi-arrow-down">↓</span>
+            <span class="cpi-compare-stage cpi-stage-dim">Lagged signal</span>
+          </div>
+        </div>
+        <div class="cpi-compare-tag">vs</div>
+        <div class="cpi-compare-panel cpi-air-panel">
+          <div class="cpi-compare-head">
+            <span class="cpi-compare-chip cpi-air-chip">Scraped observations</span>
+            <span class="cpi-compare-title">Real-Time Airfare Index</span>
+          </div>
+          <div class="cpi-compare-stages">
+            <span class="cpi-compare-stage">Daily scraping</span>
+            <span class="cpi-arrow-down">↓</span>
+            <span class="cpi-compare-stage">Cleaned fares</span>
+            <span class="cpi-arrow-down">↓</span>
+            <span class="cpi-compare-stage">Route-weighted index</span>
+            <span class="cpi-arrow-down">↓</span>
+            <span class="cpi-compare-stage">High-frequency signal</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cpi-quote">
+        “The objective is not to replace CPI — but to provide a faster airfare signal that can complement official measurement.”
+      </div>
+    </section>
+
+    <!-- 6 · WHAT MOVES AIRFARES -->
+    <section class="cpi-section reveal-section" id="cpi-drivers">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 05 · Drivers</p>
+        <h2 class="cpi-section-title">What Moves Airfares?</h2>
+        <p class="cpi-section-sub">Five connected drivers feed into the passenger fare. Hover a node for detail.</p>
+      </div>
+
+      <div class="cpi-drivers-stage">
+        <svg class="cpi-drivers-svg" id="cpi-drivers-svg" viewBox="0 0 1000 420" role="img" aria-label="Network of airfare price drivers connected to passenger fare"></svg>
+        <div class="cpi-drivers-detail" id="cpi-drivers-detail">
+          <span class="cpi-drivers-detail-name" id="cpi-drivers-name">Select a driver</span>
+          <span class="cpi-drivers-detail-desc" id="cpi-drivers-desc">Each driver transmits through airline operating conditions into the quoted fare.</span>
+        </div>
+      </div>
+
+      <div class="cpi-drivers-note">
+        Fuel is a major airline operating cost, so ATF price shocks can transmit into fares — but no single driver explains every fare movement. Recent Indian aviation reporting documents ATF and airspace-disruption episodes feeding into fare pressure.
+      </div>
+    </section>
+
+    <!-- 7 · WHEN THE WORLD MOVES, AIRFARES MOVE -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="cpi-events">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 06 · Historical context</p>
+        <h2 class="cpi-section-title">When the World Moves, Airfares Move</h2>
+        <p class="cpi-section-sub">Selected historical episodes illustrating how disruptions, demand shocks and fuel movements can coincide with airfare changes.</p>
+      </div>
+
+      <div class="cpi-chart-wrap" id="cpi-events-wrap">
+        <canvas id="cpiEventsChart" height="360"></canvas>
+      </div>
+      <div class="cpi-chart-note">
+        Illustrative event timeline — a normalized reconstruction (100&nbsp;=&nbsp;pre-event reference) consistent with documented episodes, not a measured series.
+      </div>
+    </section>
+
+    <!-- 8 · FROM SHOCK → FARE → CPI -->
+    <section class="cpi-section reveal-section" id="cpi-causal">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 07 · Transmission</p>
+        <h2 class="cpi-section-title">From Shock → Fare → CPI</h2>
+        <p class="cpi-section-sub">How an external shock travels through airline economics into the measured price of air travel.</p>
+      </div>
+
+      <div class="cpi-causal">
+        <div class="cpi-causal-stage cpi-causal-shock">
+          <span class="cpi-causal-tag">Trigger</span>
+          <span class="cpi-causal-name">External Shock</span>
+          <span class="cpi-causal-desc">Macro, geopolitical or weather event</span>
+        </div>
+        <span class="cpi-causal-arrow">→</span>
+        <div class="cpi-causal-stage">
+          <span class="cpi-causal-tag">Levers</span>
+          <span class="cpi-causal-name">Oil / ATF · Capacity · Demand</span>
+          <span class="cpi-causal-desc">Cost &amp; supply-side channels</span>
+        </div>
+        <span class="cpi-causal-arrow">→</span>
+        <div class="cpi-causal-stage">
+          <span class="cpi-causal-tag">Operations</span>
+          <span class="cpi-causal-name">Airline Operating Conditions</span>
+          <span class="cpi-causal-desc">Utilisation, fuel, routing</span>
+        </div>
+        <span class="cpi-causal-arrow">→</span>
+        <div class="cpi-causal-stage cpi-causal-air">
+          <span class="cpi-causal-tag">Market</span>
+          <span class="cpi-causal-name">Airfare</span>
+          <span class="cpi-causal-desc">Quoted price for travellers</span>
+        </div>
+        <span class="cpi-causal-arrow">→</span>
+        <div class="cpi-causal-stage cpi-causal-cpi">
+          <span class="cpi-causal-tag">Measurement</span>
+          <span class="cpi-causal-name">CPI Airfare Component</span>
+          <span class="cpi-causal-desc">Captured within official CPI</span>
+        </div>
+        <span class="cpi-causal-arrow">→</span>
+        <div class="cpi-causal-stage cpi-causal-cpi">
+          <span class="cpi-causal-tag">Signal</span>
+          <span class="cpi-causal-name">Headline Inflation</span>
+          <span class="cpi-causal-desc">Aggregate price level</span>
+        </div>
+      </div>
+      <div class="cpi-causal-disclaimer">Transmission varies by route, booking horizon, demand and market conditions.</div>
+    </section>
+
+    <!-- 9 · WHY OUR INDEX HELPS -->
+    <section class="cpi-section reveal-section" id="cpi-help">
+      <div class="cpi-section-head">
+        <p class="cpi-kicker">Section 08 · Synthesis</p>
+        <h2 class="cpi-section-title">Why Our Index Helps</h2>
+      </div>
+
+      <div class="cpi-help-grid">
+        <div class="cpi-help-col">
+          <div class="cpi-help-title cpi-cpi-title">Official CPI</div>
+          <ul class="cpi-help-list">
+            <li>Monthly cadence</li>
+            <li>Broad household basket</li>
+            <li>Official benchmark</li>
+          </ul>
+        </div>
+        <div class="cpi-help-col">
+          <div class="cpi-help-title cpi-air-title">Real-Time Airfare Index</div>
+          <ul class="cpi-help-list">
+            <li>High-frequency observations</li>
+            <li>Route-level granularity</li>
+            <li>Scraped fare quotes</li>
+          </ul>
+        </div>
+        <div class="cpi-help-col">
+          <div class="cpi-help-title cpi-together-title">Together</div>
+          <p class="cpi-help-txt">Better visibility into short-term airfare movements between official CPI releases.</p>
+        </div>
+      </div>
+
+      <div class="cpi-equation">
+        <div class="cpi-equation-term cpi-cpi-term">Official CPI <span>Monthly</span></div>
+        <div class="cpi-equation-op">+</div>
+        <div class="cpi-equation-term cpi-air-term">Real-Time Airfare Index <span>Daily / High-frequency</span></div>
+        <div class="cpi-equation-op">=</div>
+        <div class="cpi-equation-term cpi-faster-term">Faster CPI Intelligence</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 10 · FOOTER / METHODOLOGY -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="footer-brand-name">Airfare Index</span>
+        <span class="footer-brand-tag">Augmenting All-India CPI</span>
+      </div>
+      <div class="footer-team">
+        <span>Built by</span>
+        <strong>Team Serie A</strong>
+      </div>
+      <span class="footer-event">Smart India Hackathon 2026</span>
+    </div>
+  </footer>
+
+  <script src="cpi.js"></script>
+</body>
+</html>
