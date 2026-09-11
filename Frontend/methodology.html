@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Methodology &amp; API · Airfare Price Index — from raw fares to a real-time index</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230F2A43'><path d='M12 1L21 10.5Q21.3 11.6 20.3 12.1L15 14Q16 18.9 17.3 21.9Q17.8 22.9 16.6 22.9L12 18.9L7.4 22.9Q6.2 22.9 6.7 21.9Q8 18.9 9 14L3.7 12.1Q2.7 11.6 3 10.5Z'/></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="methodology.css">
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="app-header" id="methodology-header">
+    <div class="header-container">
+      <a class="brand-section" href="index.html">
+        <div class="brand-logo-mark" title="National Airfare Intelligence Engine">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 1L21 10.5Q21.3 11.6 20.3 12.1L15 14Q16 18.9 17.3 21.9Q17.8 22.9 16.6 22.9L12 18.9L7.4 22.9Q6.2 22.9 6.7 21.9Q8 18.9 9 14L3.7 12.1Q2.7 11.6 3 10.5Z"/>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <div class="brand-title">
+            <span>Airfare Price Index</span>
+          </div>
+          <span class="india-first-badge">Real-Time Airfare Intelligence for CPI Augmentation</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a class="nav-link" href="index.html">Dashboard</a></li>
+          <li><a class="nav-link" href="cpi.html">CPI Augmentation</a></li>
+          <li><a class="nav-link active" href="methodology.html">Methodology</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-status-area">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Dark / Light mode" aria-label="Toggle Theme">
+          <svg id="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <svg id="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="cpi-main">
+
+    <!-- HERO -->
+    <section class="cpi-hero meth-hero reveal-section" id="meth-hero">
+      <div class="cpi-hero-bg" aria-hidden="true">
+        <svg viewBox="0 0 1200 480" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="methHeroFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0284C7" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#0284C7" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g class="cpi-hero-grid">
+            <line x1="0" y1="120" x2="1200" y2="120"/><line x1="0" y1="240" x2="1200" y2="240"/><line x1="0" y1="360" x2="1200" y2="360"/>
+            <line x1="300" y1="0" x2="300" y2="480"/><line x1="600" y1="0" x2="600" y2="480"/><line x1="900" y1="0" x2="900" y2="480"/>
+          </g>
+          <rect class="cpi-hero-area" x="0" y="120" width="1200" height="360"/>
+          <polyline class="cpi-hero-line" points="0,360 140,344 280,356 420,330 560,338 700,306 840,318 980,268 1200,252"/>
+        </svg>
+      </div>
+
+      <div class="meth-sys-badge">END-TO-END AUTOMATED PIPELINE</div>
+
+      <h1 class="cpi-hero-title">Methodology</h1>
+      <p class="cpi-hero-sub">From raw airfare observations to a real-time, statistically robust Airfare Price Index — and the public API that exposes it.</p>
+
+      <div class="meth-pipeline" role="list" aria-label="Data pipeline stages">
+        <span class="meth-pipe-stage" role="listitem">COLLECT</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-pipe-stage" role="listitem">CLEAN</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-pipe-stage" role="listitem">NORMALIZE</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-pipe-stage" role="listitem">VALIDATE</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-pipe-stage" role="listitem">WEIGHT</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-pipe-stage" role="listitem">INDEX</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-pipe-stage" role="listitem">DISSEMINATE</span>
+      </div>
+    </section>
+
+    <!-- 1 · OUR SOLUTION AT A GLANCE -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-arch">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">01 · System Map</span>
+        <h2 class="cpi-section-title">Our Solution at a Glance</h2>
+        <p class="cpi-section-sub">Hover or tap any stage in the pipeline to read what it does. Observed data enters at the top; a weighted index and its API leave at the bottom.</p>
+      </div>
+
+      <div class="meth-arch-grid">
+        <ol class="meth-arch-rail" id="methArchRail">
+          <li class="meth-arch-node" data-idx="0" tabindex="0" role="button">
+            <span class="meth-arch-idx">S1</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Airlines + OTAs</span><span class="meth-arch-tag">observed sources</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="1" tabindex="0" role="button">
+            <span class="meth-arch-idx">S2</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Automated Web Scrapers</span><span class="meth-arch-tag">scheduled collection</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="2" tabindex="0" role="button">
+            <span class="meth-arch-idx">S3</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Raw Fare Store</span><span class="meth-arch-tag">timestamped log</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="3" tabindex="0" role="button">
+            <span class="meth-arch-idx">S4</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Data Cleaning &amp; Validation</span><span class="meth-arch-tag">schema, dup, outlier rules</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="4" tabindex="0" role="button">
+            <span class="meth-arch-idx">S5</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Fare Normalization</span><span class="meth-arch-tag">comparable fare definition</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="5" tabindex="0" role="button">
+            <span class="meth-arch-idx">S6</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Route + Lead-Time Aggregation</span><span class="meth-arch-tag">robust medians</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="6" tabindex="0" role="button">
+            <span class="meth-arch-idx">S7</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">DGCA Traffic Weights</span><span class="meth-arch-tag">market representation</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="7" tabindex="0" role="button">
+            <span class="meth-arch-idx">S8</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Airfare Price Index</span><span class="meth-arch-tag">national APIx</span></div>
+          </li>
+          <li class="meth-arch-node" data-idx="8" tabindex="0" role="button">
+            <span class="meth-arch-idx">S9</span>
+            <div class="meth-arch-body"><span class="meth-arch-name">Dashboard + API</span><span class="meth-arch-tag">dissemination</span></div>
+          </li>
+        </ol>
+
+        <aside class="meth-arch-detail" id="methArchDetail" aria-live="polite">
+          <span class="meth-arch-detail-name" id="methArchName">Select a stage</span>
+          <span class="meth-arch-detail-desc" id="methArchDesc">Each stage of the pipeline turns raw web observations into a cleaner, more decision-ready artifact — ending in the index and its API.</span>
+          <div class="meth-arch-legend">
+            <span class="meth-lego"><i class="meth-dot-obs"></i>Observed data</span>
+            <span class="meth-lego"><i class="meth-dot-der"></i>Derived statistics</span>
+            <span class="meth-lego"><i class="meth-dot-off"></i>Official CPI framework</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 2 · AUTOMATED DATA COLLECTION -->
+    <section class="cpi-section reveal-section" id="sec-collect">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">02 · Collection</span>
+        <h2 class="cpi-section-title">1 — Automated Data Collection</h2>
+        <p class="cpi-section-sub">No manual fares. Fares are collected on a fixed schedule, in a repeatable format, with the departure date, booking horizon and scrape time recorded for every quote.</p>
+      </div>
+
+      <div class="cpi-section-grid cpi-what-grid">
+        <div class="meth-source-col">
+          <div class="meth-source-card">
+            <div class="meth-source-head">
+              <span class="meth-source-name">Airline Websites</span>
+              <span class="meth-status-chip meth-ok">ACTIVE</span>
+            </div>
+            <p class="meth-source-desc">Scheduled crawls of airline fare feeds for selected domestic corridors and Economy fare classes. The current build tracks Air India sources.</p>
+          </div>
+          <div class="meth-source-card meth-planned">
+            <div class="meth-source-head">
+              <span class="meth-source-name">Online Travel Aggregators</span>
+              <span class="meth-status-chip meth-future">ROADMAP</span>
+            </div>
+            <p class="meth-source-desc">OTA endpoints will add display fares and cross-source price checks. Newspaper-grade comparison only when the second source is operational.</p>
+          </div>
+
+          <div class="meth-subvisual">
+            <span class="meth-subvisual-title">Booking horizons collected</span>
+            <div class="meth-horizons">
+              <span class="meth-hzone meth-hzone-soon">T+1<span class="meth-hzone-note">rollout</span></span>
+              <span class="meth-hzone">T+7</span>
+              <span class="meth-hzone">T+15</span>
+              <span class="meth-hzone">T+30</span>
+              <span class="meth-hzone">T+45</span>
+            </div>
+            <p class="meth-subvisual-note">Lead time = days between collection and departure date.</p>
+          </div>
+        </div>
+
+        <div class="meth-collect-right">
+          <ul class="meth-check-list">
+            <li>Automated scheduled scraping of live fare data</li>
+            <li>Route, airline, flight number and fare extraction</li>
+            <li>Departure date and booking horizon captured per quote</li>
+            <li>ISO timestamp recorded for every observation</li>
+            <li>Raw response retained for traceability and audit</li>
+          </ul>
+
+          <div class="meth-micro-flow">
+            <span class="meth-micro-step">SEARCH</span>
+            <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+            <span class="meth-micro-step">EXTRACT</span>
+            <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+            <span class="meth-micro-step">TIMESTAMP</span>
+            <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+            <span class="meth-micro-step">STORE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · DATA CLEANING & QUALITY CONTROL -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-clean">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">03 · Quality Control</span>
+        <h2 class="cpi-section-title">2 — Data Cleaning &amp; Quality Control</h2>
+        <p class="cpi-section-sub">The problem statement requires raw quotes to pass through a cleaning pipeline before statistics are drawn. Every observation moves through these gates.</p>
+      </div>
+
+      <div class="meth-clean-grid">
+        <div class="meth-funnel" id="methFunnel" role="list" aria-label="Cleaning funnel">
+          <div class="meth-funnel-head" role="listitem">RAW QUOTES</div>
+          <div class="meth-funnel-stage" role="listitem"><span class="meth-funnel-flag">1</span>Schema Validation</div>
+          <div class="meth-funnel-stage" role="listitem"><span class="meth-funnel-flag">2</span>Missing-Value Handling</div>
+          <div class="meth-funnel-stage" role="listitem"><span class="meth-funnel-flag">3</span>Duplicate Removal</div>
+          <div class="meth-funnel-stage" role="listitem"><span class="meth-funnel-flag">4</span>Fare Normalization</div>
+          <div class="meth-funnel-stage" role="listitem"><span class="meth-funnel-flag">5</span>Outlier Detection</div>
+          <div class="meth-funnel-tail" role="listitem">VALID OBSERVATIONS</div>
+        </div>
+
+        <div class="meth-clean-cards">
+          <div class="meth-clean-card">
+            <h4 class="meth-clean-title">Missing values</h4>
+            <p class="meth-clean-desc">Invalid or incomplete observations are flagged or excluded according to predefined schema rules.</p>
+          </div>
+          <div class="meth-clean-card">
+            <h4 class="meth-clean-title">Duplicates</h4>
+            <p class="meth-clean-desc">Repeated quotes for the same flight, route and horizon are deduplicated at ingest.</p>
+          </div>
+          <div class="meth-clean-card">
+            <h4 class="meth-clean-title">Outliers</h4>
+            <p class="meth-clean-desc">Extreme fare observations are detected with robust statistical rules and reviewed or filtered — genuine price shocks are never blindly deleted.</p>
+          </div>
+          <div class="meth-clean-card">
+            <h4 class="meth-clean-title">Normalization</h4>
+            <p class="meth-clean-desc">Fare fields, currency, timestamps, route codes, airline identifiers and booking horizons are standardized before aggregation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="meth-kpi-strip">
+        <div class="meth-kpi"><span class="meth-kpi-val">2,010</span><span class="meth-kpi-lbl">Raw Quotes</span></div>
+        <div class="meth-kpi"><span class="meth-kpi-val">1,967</span><span class="meth-kpi-lbl">Valid Quotes</span></div>
+        <div class="meth-kpi"><span class="meth-kpi-val">43</span><span class="meth-kpi-lbl">Rejected</span></div>
+        <div class="meth-kpi"><span class="meth-kpi-val">6.9%</span><span class="meth-kpi-lbl">Duplicate Rate</span></div>
+        <div class="meth-kpi"><span class="meth-kpi-val">0%</span><span class="meth-kpi-lbl">Missing Rate</span></div>
+      </div>
+      <p class="meth-data-note">Current build snapshot — final_scraper.csv, collection window ending 5 Sep 2026. Duplicate share = repeated rows within a scheduled run (138), removed at ingest; rejected = 43 outlier quotes filtered before aggregation; missing = quotes failing required-field checks.</p>
+    </section>
+
+    <!-- 4 · FARE STANDARDIZATION -->
+    <section class="cpi-section reveal-section" id="sec-normalize">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">04 · Fare Definition</span>
+        <h2 class="cpi-section-title">3 — Fare Standardization</h2>
+        <p class="cpi-section-sub">Sources expose fares differently. The index standardizes every observation into one consistent definition and keeps component fields whenever available.</p>
+      </div>
+
+      <div class="meth-std-grid">
+        <div class="meth-std-src">
+          <span class="meth-std-chip">AIRLINE A</span>
+          <div class="meth-std-rows">
+            <span class="meth-std-row">Base Fare</span>
+            <span class="meth-std-row">+ Taxes</span>
+            <span class="meth-std-row">+ Fees</span>
+          </div>
+        </div>
+        <div class="meth-std-src meth-std-ota">
+          <span class="meth-std-chip">OTA</span>
+          <div class="meth-std-rows">
+            <span class="meth-std-row">Display Fare</span>
+            <span class="meth-std-row">+ Convenience Fee</span>
+            <span class="meth-std-row">+ Taxes</span>
+          </div>
+        </div>
+        <div class="meth-std-arrow" aria-hidden="true">↓</div>
+        <div class="meth-std-out">
+          <span class="meth-std-outname">STANDARDIZED OBSERVED FARE</span>
+          <span class="meth-std-outsub">median per route × booking horizon</span>
+        </div>
+      </div>
+
+      <div class="meth-comp-blocks">
+        <div class="meth-comp-block">
+          <span class="meth-comp-lab">base_fare</span>
+          <span class="meth-comp-val meth-comp-ok">present</span>
+        </div>
+        <div class="meth-comp-block">
+          <span class="meth-comp-lab">taxes</span>
+          <span class="meth-comp-val meth-comp-ok">present</span>
+        </div>
+        <div class="meth-comp-block">
+          <span class="meth-comp-lab">convenience_fee</span>
+          <span class="meth-comp-val meth-comp-ok">present</span>
+        </div>
+        <div class="meth-comp-block meth-comp-absent">
+          <span class="meth-comp-lab">ota_display_fare</span>
+          <span class="meth-comp-val meth-no">NOT EXPOSED</span>
+        </div>
+      </div>
+
+      <div class="cpi-quote">A component that is not exposed by a source is recorded as <span class="meth-inline-no">NOT EXPOSED</span> — it is never estimated or fabricated. Total fare is only assembled when its components are actually observed.</div>
+    </section>
+
+    <!-- 5 · ROUTE & LEAD-TIME AGGREGATION -->
+    <section class="cpi-section reveal-section" id="sec-aggregate">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">05 · Aggregation</span>
+        <h2 class="cpi-section-title">4 — Route &amp; Lead-Time Aggregation</h2>
+        <p class="cpi-section-sub">Each route × booking-horizon cell is a representative fare derived from the valid observations available for that segment.</p>
+      </div>
+
+      <div class="meth-matrix-wrap">
+        <table class="meth-matrix">
+          <caption class="meth-matrix-cap">Representative fares (₹, median) · current build · 4 corridors × 5 booking horizons</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="meth-th-route">Route</th>
+              <th scope="col">T+1</th>
+              <th scope="col">T+7</th>
+              <th scope="col">T+15</th>
+              <th scope="col">T+30</th>
+              <th scope="col">T+45</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">DEL−BOM</th>
+              <td class="meth-cell-soon">· rollout</td>
+              <td>₹6,979 <span class="meth-cell-n">n=179</span></td>
+              <td>₹6,979 <span class="meth-cell-n">n=204</span></td>
+              <td>₹7,138 <span class="meth-cell-n">n=176</span></td>
+              <td>₹7,636 <span class="meth-cell-n">n=207</span></td>
+            </tr>
+            <tr>
+              <th scope="row">BLR−DEL</th>
+              <td class="meth-cell-soon">· rollout</td>
+              <td>₹10,274 <span class="meth-cell-n">n=131</span></td>
+              <td>₹10,274 <span class="meth-cell-n">n=140</span></td>
+              <td>₹8,814 <span class="meth-cell-n">n=133</span></td>
+              <td>₹10,441 <span class="meth-cell-n">n=136</span></td>
+            </tr>
+            <tr>
+              <th scope="row">BLR−BOM</th>
+              <td class="meth-cell-soon">· rollout</td>
+              <td>₹9,386 <span class="meth-cell-n">n=82</span></td>
+              <td>₹7,673 <span class="meth-cell-n">n=100</span></td>
+              <td>₹7,661 <span class="meth-cell-n">n=80</span></td>
+              <td>₹8,696 <span class="meth-cell-n">n=95</span></td>
+            </tr>
+            <tr>
+              <th scope="row">DEL−HYD</th>
+              <td class="meth-cell-soon">· rollout</td>
+              <td>₹10,899 <span class="meth-cell-n">n=84</span></td>
+              <td>₹10,177 <span class="meth-cell-n">n=94</span></td>
+              <td>₹10,315 <span class="meth-cell-n">n=78</span></td>
+              <td>₹11,425 <span class="meth-cell-n">n=91</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="meth-aggr-flow">
+        <span class="meth-aggr-chip">Raw quotes</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-aggr-chip">route / horizon groups</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-aggr-chip meth-aggr-out">representative fare</span>
+      </div>
+
+      <p class="meth-note-line"><span class="meth-emphasis">Observed fare profile, not a forecast.</span> These cells describe what the market charges today at a given lead time. They do not predict what a ticket will cost at departure.</p>
+    </section>
+
+    <!-- 6 · ROUTE WEIGHTING -->
+    <section class="cpi-section reveal-section" id="sec-weight">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">06 · Route Weighting</span>
+        <h2 class="cpi-section-title">5 — Route Weighting</h2>
+        <p class="cpi-section-sub">Not all routes are treated equally. Traffic-based weights stop a busy corridor from being averaged away by a quiet one.</p>
+      </div>
+
+      <div class="cpi-section-grid">
+        <div class="meth-weight-flow">
+          <div class="meth-weight-step">DGCA Passenger Traffic</div>
+          <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+          <div class="meth-weight-step">Route Share</div>
+          <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+          <div class="meth-weight-step">Normalized Route Weight</div>
+          <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+          <div class="meth-weight-step meth-weight-out">National Airfare Index</div>
+        </div>
+
+        <div class="meth-weight-right">
+          <div class="meth-example">
+            <span class="meth-example-title">High passenger-volume corridor</span>
+            <span class="meth-example-txt">higher contribution to the national index</span>
+          </div>
+          <div class="meth-example meth-example-low">
+            <span class="meth-example-title">Low passenger-volume corridor</span>
+            <span class="meth-example-txt">lower contribution to the national index</span>
+          </div>
+
+          <div class="meth-weight-bars">
+            <span class="meth-weight-bars-title">Current build — weights from observed quote mix</span>
+            <div class="meth-bar-row"><span class="meth-bar-name">DEL−BOM</span><div class="meth-bar-track"><i class="meth-bar" style="width:38.1%"></i></div><span class="meth-bar-val">38.1%</span></div>
+            <div class="meth-bar-row"><span class="meth-bar-name">BLR−DEL</span><div class="meth-bar-track"><i class="meth-bar" style="width:26.9%"></i></div><span class="meth-bar-val">26.9%</span></div>
+            <div class="meth-bar-row"><span class="meth-bar-name">BLR−BOM</span><div class="meth-bar-track"><i class="meth-bar" style="width:17.8%"></i></div><span class="meth-bar-val">17.8%</span></div>
+            <div class="meth-bar-row"><span class="meth-bar-name">DEL−HYD</span><div class="meth-bar-track"><i class="meth-bar" style="width:17.3%"></i></div><span class="meth-bar-val">17.3%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="meth-note-line">Traffic-based weights make the national index representative of the domestic aviation market rather than a plain average of every route. DGCA passenger-share inputs are the target weighting scheme; the current build uses observed quote shares until external traffic data is linked and audited.</p>
+    </section>
+
+    <!-- 7 · INDEX CONSTRUCTION -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-index">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">07 · Index Construction</span>
+        <h2 class="cpi-section-title">6 — Index Construction</h2>
+        <p class="cpi-section-sub">A transparent, reproducible aggregation — route relatives combined by their weights into a single national number.</p>
+      </div>
+
+      <div class="meth-formula-area">
+        <div class="meth-formula">
+          <span class="meth-formula-lbl">Route-level price relative</span>
+          <div class="meth-formula-expr">Price Relative = <span class="meth-frac"><span class="meth-frac-num">Current Representative Fare</span><span class="meth-frac-den">Reference Fare</span></span> &nbsp;×&nbsp; 100</div>
+        </div>
+        <div class="meth-formula">
+          <span class="meth-formula-lbl">National Airfare Index</span>
+          <div class="meth-formula-expr">APIx = Σ <span class="meth-frac-sub">(Route Weight × Route Index)</span></div>
+        </div>
+      </div>
+
+      <div class="meth-index-flow">
+        <span class="meth-if-chip">Route fares</span>
+        <span class="meth-if-chip">Route weights</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-if-chip meth-if-out">Weighted aggregation</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-if-chip meth-if-out">APIx</span>
+      </div>
+
+      <div class="meth-base-strip">
+        <span class="meth-base-chip">BASE = 100</span>
+        <p class="meth-base-txt">An index level expresses airfare movement relative to a reference period, not an absolute ticket price. Route-level relatives are rebased so the reference scrape window equals 100; each later window is measured against it. Because weighting and rebasing are reproducible, any consumer of the API can reconstruct the number.</p>
+      </div>
+
+      <div class="meth-exp-label">Experimental / high-frequency airfare index designed to complement official CPI measurement — not the CPI itself.</div>
+    </section>
+
+    <!-- 8 · QUALITY ASSURANCE & RELIABILITY -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-qa">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">08 · Reliability</span>
+        <h2 class="cpi-section-title">7 — Quality Assurance &amp; Reliability</h2>
+        <p class="cpi-section-sub">The pipeline exposes its own health: coverage, validity, freshness and scraper status are published alongside the index.</p>
+      </div>
+
+      <div class="meth-qa-grid">
+        <div class="meth-qa-card">
+          <span class="meth-qa-name">Coverage</span>
+          <span class="meth-qa-val">4 / 4 corridors</span>
+          <span class="meth-qa-sub">4 of 5 horizons live · T+1 rollout</span>
+        </div>
+        <div class="meth-qa-card">
+          <span class="meth-qa-name">Validity</span>
+          <span class="meth-qa-val">1,967 / 2,010</span>
+          <span class="meth-qa-sub">97.9% of raw quotes usable</span>
+        </div>
+        <div class="meth-qa-card">
+          <span class="meth-qa-name">Freshness</span>
+          <span class="meth-qa-val">5 Sep 2026</span>
+          <span class="meth-qa-sub">latest successful scrape window</span>
+        </div>
+        <div class="meth-qa-card">
+          <span class="meth-qa-name">Consistency</span>
+          <span class="meth-qa-val">Single source</span>
+          <span class="meth-qa-sub">cross-source checks on OTA rollout</span>
+        </div>
+        <div class="meth-qa-card">
+          <span class="meth-qa-name">Outlier Rate</span>
+          <span class="meth-qa-val">2.1%</span>
+          <span class="meth-qa-sub">43 flagged · reviewed, not deleted</span>
+        </div>
+        <div class="meth-qa-card">
+          <span class="meth-qa-name">Scraper Health</span>
+          <span class="meth-qa-val meth-qa-ok">Operational</span>
+          <span class="meth-qa-sub">1 / 1 sources reporting on schedule</span>
+        </div>
+      </div>
+
+      <div class="meth-qa-flow">
+        <span class="meth-qa-flow-step meth-qa-pass">PASS</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-qa-flow-step meth-qa-flag">FLAG</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-qa-flow-step meth-qa-review">REVIEW</span>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <span class="meth-qa-flow-step meth-qa-accept">ACCEPT</span>
+        <span class="meth-qa-or" aria-hidden="true">/</span>
+        <span class="meth-qa-flow-step meth-qa-reject">REJECT</span>
+      </div>
+
+      <p class="meth-note-line"><span class="meth-emphasis">Genuine shocks must remain visible.</span> Unusual fare movements are not automatically deleted: they are flagged and reviewed so that real market moves stay in the index while corrupted quotes are kept out.</p>
+    </section>
+
+    <!-- 9 · VALIDATION & BACKTESTING -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-validate">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">09 · Evaluation</span>
+        <h2 class="cpi-section-title">8 — Validation &amp; Backtesting</h2>
+        <p class="cpi-section-sub">How the index will eventually be evaluated against official statistics — honestly, and only where overlapping history exists.</p>
+      </div>
+
+      <div class="meth-validate-col">
+        <div class="meth-validate-step">Historical Airfare Data</div>
+        <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+        <div class="meth-validate-step">Construct Historical APIx</div>
+        <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+        <div class="meth-validate-step">Aggregate to Comparable Frequency</div>
+        <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+        <div class="meth-validate-step">Compare with Official CPI / Official Airfare Component</div>
+        <div class="meth-pipe-arrow" aria-hidden="true">↓</div>
+        <div class="meth-validate-step meth-validate-out">Accuracy &amp; Directional Tests</div>
+      </div>
+
+      <div class="meth-metric-row">
+        <div class="meth-metric"><span class="meth-metric-name">Correlation</span><span class="meth-metric-pad">—</span></div>
+        <div class="meth-metric"><span class="meth-metric-name">MAE</span><span class="meth-metric-pad">—</span></div>
+        <div class="meth-metric"><span class="meth-metric-name">RMSE</span><span class="meth-metric-pad">—</span></div>
+        <div class="meth-metric"><span class="meth-metric-name">Directional Accuracy</span><span class="meth-metric-pad">—</span></div>
+      </div>
+
+      <p class="meth-note-line"><span class="meth-emphasis">Validation requires overlapping historical observations at a comparable frequency.</span> No backtest is fabricated when that overlap is unavailable. The placeholders above are filled only after official statistics and scraped history can be aligned in time, geography and coverage.</p>
+    </section>
+
+    <!-- 10 · REAL-TIME DATA PIPELINE -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-pipeline">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">10 · Production</span>
+        <h2 class="cpi-section-title">9 — Real-Time Data Pipeline</h2>
+        <p class="cpi-section-sub">A live production architecture: each hop is a distinct, independently observable stage with its own cadence.</p>
+      </div>
+
+      <div class="meth-prod">
+        <div class="meth-prod-stage">
+          <span class="meth-prod-name">SCRAPE</span>
+          <span class="meth-prod-tag">scheduled ingestion</span>
+        </div>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <div class="meth-prod-stage">
+          <span class="meth-prod-name">QUEUE</span>
+          <span class="meth-prod-tag">message staging</span>
+        </div>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <div class="meth-prod-stage">
+          <span class="meth-prod-name">CLEAN</span>
+          <span class="meth-prod-tag">automated processing</span>
+        </div>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <div class="meth-prod-stage">
+          <span class="meth-prod-name">VALIDATE</span>
+          <span class="meth-prod-tag">rule checks</span>
+        </div>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <div class="meth-prod-stage">
+          <span class="meth-prod-name">INDEX</span>
+          <span class="meth-prod-tag">index refresh</span>
+        </div>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <div class="meth-prod-stage">
+          <span class="meth-prod-name">API</span>
+          <span class="meth-prod-tag">API availability</span>
+        </div>
+        <span class="meth-pipe-arrow" aria-hidden="true">→</span>
+        <div class="meth-prod-stage meth-prod-out">
+          <span class="meth-prod-name">DASHBOARD</span>
+          <span class="meth-prod-tag">live UI</span>
+        </div>
+      </div>
+
+      <p class="meth-note-line">The current build serves the full pipeline from the bundled dataset (final_scraper.csv) with on-demand refresh. Queue, scheduling and persistent storage arrive with the hosted backend — the stage layout above is the target architecture.</p>
+    </section>
+
+    <!-- 11 · API ACCESS -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-api">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">11 · Programmatic Access</span>
+        <h2 class="cpi-section-title">10 — Programmatic Access</h2>
+        <p class="cpi-section-sub">Access cleaned airfare observations and calculated index values directly through our API.</p>
+      </div>
+
+      <div class="meth-api-grid">
+        <div class="meth-api-console">
+          <div class="meth-endpoint">
+            <span class="meth-method">GET</span>
+            <code class="meth-epl">/api/v1/index/latest</code>
+            <span class="meth-epl-desc">Latest national APIx value and reference period</span>
+            <button class="meth-try" type="button" data-try="0">Try API</button>
+          </div>
+          <div class="meth-endpoint">
+            <span class="meth-method">GET</span>
+            <code class="meth-epl">/api/v1/index/history</code>
+            <span class="meth-epl-desc">APIx time series across scrape windows</span>
+            <button class="meth-try" type="button" data-try="1">Try API</button>
+          </div>
+          <div class="meth-endpoint">
+            <span class="meth-method">GET</span>
+            <code class="meth-epl">/api/v1/routes</code>
+            <span class="meth-epl-desc">Tracked routes with weights and coverage</span>
+            <button class="meth-try" type="button" data-try="2">Try API</button>
+          </div>
+          <div class="meth-endpoint">
+            <span class="meth-method">GET</span>
+            <code class="meth-epl">/api/v1/routes/{route}</code>
+            <span class="meth-epl-desc">Route-level fare profile by booking horizon</span>
+            <button class="meth-try" type="button" data-try="3">Try API</button>
+          </div>
+          <div class="meth-endpoint">
+            <span class="meth-method">GET</span>
+            <code class="meth-epl">/api/v1/fares</code>
+            <span class="meth-epl-desc">Cleaned fare observations and representative fares</span>
+            <button class="meth-try" type="button" data-try="4">Try API</button>
+          </div>
+          <div class="meth-endpoint">
+            <span class="meth-method">GET</span>
+            <code class="meth-epl">/api/v1/quality</code>
+            <span class="meth-epl-desc">Coverage, validity, freshness and scraper health</span>
+            <button class="meth-try" type="button" data-try="5">Try API</button>
+          </div>
+        </div>
+
+        <div class="meth-api-right">
+          <div class="meth-json-title">Response preview</div>
+          <pre class="meth-json">{
+  "route": "DEL-BOM",
+  "lead_time": "T+15",
+  "average_fare": 7255,
+  "observations": 184,
+  "timestamp": "2026-09-07T14:32:00Z"
+}</pre>
+          <div class="meth-try-panel" id="methTryPanel" hidden>
+            <span class="meth-try-panel-title">Example response</span>
+            <pre class="meth-json meth-json-sub" id="methTryCode">—</pre>
+          </div>
+
+          <div class="meth-api-actions">
+            <a class="cpi-footer-btn cpi-footer-btn-primary" href="index.html">OPEN API</a>
+            <button class="cpi-footer-btn" id="methDocsBtn" type="button">API DOCUMENTATION</button>
+          </div>
+          <p class="meth-api-note" id="methDocsNote" hidden>Full endpoint specification ships with the dataset build. A live backend is pending deployment; in the current build each endpoint maps to real data bundled in data.js — no working URLs are assumed before a server exists.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 · WHAT WE SOLVE -->
+    <section class="cpi-section cpi-section-wide reveal-section" id="sec-solve">
+      <div class="cpi-section-head">
+        <span class="cpi-kicker">12 · Impact</span>
+        <h2 class="cpi-section-title">What We Solve</h2>
+      </div>
+
+      <div class="meth-solve-grid">
+        <div class="meth-solve-col">
+          <span class="meth-solve-title meth-air">AUTOMATED</span>
+          <p class="meth-solve-txt">Continuous airfare collection on a fixed schedule — no manual data entry.</p>
+        </div>
+        <div class="meth-solve-col">
+          <span class="meth-solve-title">STANDARDIZED</span>
+          <p class="meth-solve-txt">Comparable fares across sources through one fare definition.</p>
+        </div>
+        <div class="meth-solve-col">
+          <span class="meth-solve-title">ROBUST</span>
+          <p class="meth-solve-txt">Cleaning, validation and outlier handling protect the statistic.</p>
+        </div>
+        <div class="meth-solve-col">
+          <span class="meth-solve-title">WEIGHTED</span>
+          <p class="meth-solve-txt">Traffic-informed route aggregation reflects the real market.</p>
+        </div>
+        <div class="meth-solve-col">
+          <span class="meth-solve-title meth-air">REAL-TIME</span>
+          <p class="meth-solve-txt">High-frequency index with a public API for downstream use.</p>
+        </div>
+      </div>
+
+      <div class="meth-signal-line">
+        <span class="meth-signal-src">Raw Web Data</span>
+        <span class="meth-pipe-arrow meth-signal-arrow" aria-hidden="true">→</span>
+        <span class="meth-signal-dst">Trusted Statistical Signal</span>
+      </div>
+
+      <div class="meth-solve-cta">
+        <a class="cpi-footer-btn cpi-footer-btn-primary" href="index.html">Explore Live Dashboard →</a>
+        <a class="cpi-footer-btn" href="#sec-api">Access API →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="footer-brand-name">Airfare Index</span>
+        <span class="footer-brand-tag">Augmenting All-India CPI</span>
+      </div>
+      <div class="footer-team">
+        <span>Built by</span>
+        <strong>Team Serie A</strong>
+      </div>
+      <span class="footer-event">Smart India Hackathon 2026</span>
+    </div>
+  </footer>
+
+  <script src="methodology.js"></script>
+</body>
+</html>

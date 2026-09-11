@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# pipeline runtime artifacts
+pipeline/logs/
+pipeline/dev/
+pipeline/data/raw/
+pipeline/final_scraper.csv.prev
+pipeline/final_scraper.csv.tmp
+
+# zipped deploy artifact
+*.zip
